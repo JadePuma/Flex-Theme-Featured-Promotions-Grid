@@ -1,52 +1,49 @@
-{% comment %}
-
-Code created by JadePuma
-Instructions - https://jadepuma.com/blogs/shopify-tutorials/featured-content-blocks-with-grid-layout-for-flex-theme
-Last editted - 26Jul24
- 
+{% comment %} 
+   
+    Code created by JadePuma
+    Instructions - https://jadepuma.com/blogs/shopify-tutorials/featured-content-blocks-with-grid-layout-for-flex-theme
+    Last editted - 7/15/24 
 {% endcomment %}
 
 {% assign block_width = 95 | divided_by: section.settings.blocks_per_row %}
 
 
-<section  class="section is-width-{{ section.settings.width }}">
-     {% if  section.settings.title != blank %}
-   
-      <h2 class="featured_content_blocks_heading">{{ section.settings.title }}</h2> 
-  
-     {% endif %}
+<section class="section is-width-{{ section.settings.width }}">
+  {% if section.settings.title != blank %}
 
-    <div class="featured_content_blocks_container container">
+    <h2 class="featured_content_blocks_heading">{{ section.settings.title }}</h2>
+
+  {% endif %}
+
+  <div class="featured_content_blocks_container container">
 
     {% for block in section.blocks %}
-        <div class="featured_content_blocks_item" style="background-color:{{ block.settings.background_color }}">
+      <div class="featured_content_blocks_item" style="background-color:{{ block.settings.background_color }}">
 
 
-            <div class="featured_content_blocks_image_container">
-                <img class ="featured_content_blocks_image" src="{{ block.settings.image | img_url: 'large' }}" >
-            </div>
-
-            <div style="margin:0px 10px">
-                <h2 style="color:{{ block.settings.text_color }}; margin:10px;">{{block.settings.title}}</h2>
-                <div style="color:{{ block.settings.text_color }}">
-                    {{block.settings.text_content}}
-                </div>
-            </div>
-            {% if block.settings.button_label != blank %}
-            <div>
-                <a href="{{ block.settings.button_link }}">
-                 <button class="featured_content_blocks_button button">{{ block.settings.button_label }}</button>
-                </a>
-            </div>
-
-            {% endif %}
+        <div class="featured_content_blocks_image_container">
+          <img class="featured_content_blocks_image" src="{{ block.settings.image | img_url: 'large' }}">
         </div>
 
+        <div style="margin:0px 10px">
+          <h2 style="color:{{ block.settings.text_color }}; margin:10px;">{{ block.settings.title }}</h2>
+          <div style="color:{{ block.settings.text_color }}">
+            {{ block.settings.text_content }}
+          </div>
+        </div>
+        {% if block.settings.button_label != blank %}
+          <div>
+            <a href="{{ block.settings.button_link }}">
+              <button class="featured_content_blocks_button button">{{ block.settings.button_label }}</button>
+            </a>
+          </div>
+
+        {% endif %}
+      </div>
+
     {% endfor %}
-    </div>
-  </section>
-
-
+  </div>
+</section>
 
 
 {% style %}
@@ -60,131 +57,132 @@ Last editted - 26Jul24
     {% endif %}
   }
 
-.featured_content_blocks_container{
-    display:flex;
-    flex-direction:row;
+  .featured_content_blocks_container {
+    display: flex;
+    flex-direction: row;
     {% if section.settings.layout_type == "classic" %}
-    justify-content: center;
+      justify-content: center;
     {% else %}
-    justify-content: left;
+      justify-content: left;
     {% endif %}
-    gap:2.1%;
-    margin-bottom:50px;
-}
+    gap: 2.1%;
+    margin-bottom: 50px;
+  }
 
-.featured_content_blocks_item{
-    text-align:center;
-    flex-basis:{{block_width}}%;
+  .featured_content_blocks_item {
+    text-align: center;
+    flex-basis: {{ block_width }}%;
     {% if section.settings.show_border %}
-    border: 1px solid black;
+      border: 1px solid black;
     {% endif %}
-    margin-top:20px;
-    padding-bottom:25px;
+    margin-top: 20px;
+    padding-bottom: 25px;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .featured_content_blocks_item {
+      text-align: center;
+      flex-basis: 45%;
+      margin-top: 20px;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .featured_content_blocks_item {
+      text-align: center;
+      flex-basis: 100%;
+      margin-top: 20px;
+    }
+  }
+
+  .featured_content_blocks_image_container {}
+
+.featured_content_blocks_image {
+  width: 100%;
 }
 
-@media only screen and (max-width: 800px) {
-.featured_content_blocks_item{
-    text-align:center;
-    flex-basis:45%;
-    margin-top:20px;
-}
-}
-
-@media only screen and (max-width: 480px) {
-.featured_content_blocks_item{
-    text-align:center;
-    flex-basis: 100%;
-    margin-top:20px;
-}
-}
-
-.featured_content_blocks_image_container{
-
+.featured_content_blocks_heading {
+  {% assign alignment = section.settings.alignment %}
+  {% if alignment == "left" %}
+    text-align: left;
+  {% elsif alignment == "center" %}
+    text-align: center;
+  {% elsif alignment == "right" %}
+    text-align: right;
+  {% endif %}
+  padding: 25px 0;
+  {% if section.settings.heading_inset %}
+    padding: 25px 25px;
+  {% endif %}
+  background-color: {{ section.settings.heading_background_color }};
+  color: {{ section.settings.headingtext_color }};
+  margin: 0;
 }
 
-.featured_content_blocks_image{
-    width:100%;
-}
-
-.featured_content_blocks_heading{
-    {% assign alignment = section.settings.alignment %}
-    {% if alignment == "left" %}
-        text-align:left;
-    {% elsif alignment == "center" %}
-        text-align:center;
-    {% elsif alignment == "right" %}
-        text-align:right;
-    {% endif %}
-    padding:25px 0px;
-    {% if section.settings.heading_inset %}
-    padding:25px 25px;
-    {% endif %}
-    background-color:{{ section.settings.heading_background_color }};
-    color:{{section.settings.headingtext_color}};
-    margin:0px;
-}
-
-.featured_content_blocks_button{
-    margin-top:20px;
+.featured_content_blocks_button {
+  margin-top: 20px;
 }
 
 {% endstyle %}
 
 {% schema %}
 
-{
-  "name": "JP Promotions Grid",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Heading"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Text"
-    },
-{
-  "type": "select",
-  "id": "alignment",
-  "label": "Alignment",
-  "options": [
-    {
-      "value": "left",
-      "label": "Left"
-    },
-    {
-      "value": "center",
-      "label": "Center"
-    },
-    {
-      "value": "right",
-      "label": "Right"
-    }
-  ],
-  "default": "left"
-},
-    {
-      "type": "color",
-      "id": "heading_background_color",
-      "label": "Heading Background Color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Heading Text Color"
-    },
-    {
-      "type": "checkbox",
-      "id": "heading_inset",
-      "label": "Heading Inset",
-      "default": false
-    },
+  {
+    "name": "JP Promotions Grid",
+    "templates": [
+      "index",
+      "page",
+      "article",
+      "collection",
+      "product",
+      "cart",
+      "blog"
+    ],
+    "settings": [
       {
         "type": "header",
-        "content": "Layout"
+        "content": "Heading"
       },
       {
+        "type": "text",
+        "id": "title",
+        "label": "Text"
+      },
+      {
+        "type": "select",
+        "id": "alignment",
+        "label": "Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          }, {
+            "value": "center",
+            "label": "Center"
+          }, {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "color",
+        "id": "heading_background_color",
+        "label": "Heading Background Color"
+      }, {
+        "type": "color",
+        "id": "text_color",
+        "label": "Heading Text Color"
+      }, {
+        "type": "checkbox",
+        "id": "heading_inset",
+        "label": "Heading Inset",
+        "default": false
+      }, {
+        "type": "header",
+        "content": "Layout"
+      }, {
         "type": "select",
         "id": "width",
         "label": "Width",
@@ -193,14 +191,12 @@ Last editted - 26Jul24
           {
             "value": "standard",
             "label": "Standard"
-          },
-          {
+          }, {
             "value": "wide",
             "label": "Wide"
           }
         ]
-      },
- {
+      }, {
         "type": "select",
         "id": "layout_type",
         "label": "Layout style",
@@ -209,80 +205,74 @@ Last editted - 26Jul24
           {
             "value": "classic",
             "label": "Classic"
-          },
-          {
+          }, {
             "value": "masonry",
             "label": "Vertical masonry"
           }
         ]
-      },
-    {
-      "type": "range",
-      "id": "blocks_per_row",
-      "label": "Blocks Per Row",
-      "min": 2,
-      "max": 4,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "checkbox",
-      "id": "show_border",
-      "label": "Show Border",
-      "default": false
-    }
-  ],
-   "blocks": [
-    {
-      "type": "Item",
-      "name": "Item",
-      "settings": [
-        {
-        "type": "image_picker",
-        "id": "image",
-        "label": "Image"
-        },
-        {
-        "type": "text",
-        "id": "title",
-        "label": "Heading",
-       "default": "Heading"
-        },
-        {
-        "type": "textarea",
-        "id": "text_content",
-        "label": "Text Content",
-        "default": "Add text content"
-        },
-        {
-        "type": "text",
-        "id": "button_label",
-        "label": "Button Label",
-        "default": "Learn More"
-        },
-        {
-        "type": "url",
-        "id": "button_link",
-        "label": "Link"
-        },
-        {
-          "type": "color",
-          "id": "background_color",
-          "label": "Background Color"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text Color"
-        }
-      ]
-    }
-  ],
-"presets": [
-    {
-       "name": "JP Promotion Grid",
-       "category": "JadePuma"
-    }
-   ]
-}
+      }, {
+        "type": "range",
+        "id": "blocks_per_row",
+        "label": "Blocks Per Row",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "default": 3
+      }, {
+        "type": "checkbox",
+        "id": "show_border",
+        "label": "Show Border",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "Item",
+        "name": "Item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Heading"
+          },
+          {
+            "type": "textarea",
+            "id": "text_content",
+            "label": "Text Content",
+            "default": "Add text content"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button Label",
+            "default": "Learn More"
+          }, {
+            "type": "url",
+            "id": "button_link",
+            "label": "Link"
+          }, {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color"
+          }, {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "JP Promotion Grid",
+        "category": "JadePuma"
+      }
+    ]
+  }
 {% endschema %}
